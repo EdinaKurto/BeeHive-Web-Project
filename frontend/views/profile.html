@@ -1,0 +1,106 @@
+<div id="profile" class="content-section">
+    <div class="breadcrumb-section breadcrumb-bg">
+        <div class="container"><div class="row"><div class="col-lg-8 offset-lg-2 text-center"><div class="breadcrumb-text"><p>Welcome to your</p><h1>Profile</h1></div></div></div></div>
+    </div>
+    <div class="container mt-5">
+        <section class="profile-section">
+            <div class="row justify-content-center">
+                <div class="col-md-8 mb-4">
+                    <div class="card shadow-lg rounded">
+                        <div class="card-header" style="background-color: #051922; color: white !important;"><h2 class="h5" style="color: white !important;">Basic Information</h2></div>
+                        <div class="card-body">
+                            <form action="/updateProfile" method="POST">
+                                <div class="form-group">
+                                    <label for="firstName">First Name:</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" value="John" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name:</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" value="Doe" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="johndoe@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phoneNumber">Phone Number:</label>
+                                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="+387 555 666" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="deliveryAddress">Delivery Address:</label>
+                                    <input type="text" class="form-control" id="deliveryAddress" name="deliveryAddress" value="123 Neka ulica, Sarajevo, Bosnia and Herzegovina" required>
+                                </div>
+                                <button type="button" class="btn boxed-btn" style="background-color: #F28123; color: white;" onclick="openEditPopup()">Update Profile</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Edit Profile Popup -->
+<div id="editProfilePopup" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #051922; color: white !important;">
+                <h5 class="modal-title" style="color: white !important;">Edit Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <label for="editFirstName">Edit First Name:</label>
+                        <input type="text" class="form-control" id="editFirstName" name="editFirstName" value="John" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Edit Last Name:</label>
+                        <input type="text" class="form-control" id="editLastName" name="editLastName" value="Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPhoneNumber">Edit Phone Number:</label>
+                        <input type="text" class="form-control" id="editPhoneNumber" name="editPhoneNumber" value="+387 555 666" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDeliveryAddress">Change Delivery Address:</label>
+                        <input type="text" class="form-control" id="editDeliveryAddress" name="editDeliveryAddress" value="123 Neka ulica, Sarajevo, Bosnia and Herzegovina" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPassword">Current Password:</label>
+                        <input type="password" class="form-control" id="editPassword" name="editPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">New Password:</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                    </div><button type="submit" class="btn boxed-btn" style="background-color: #F28123; color: white;">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#orderHistory').DataTable({
+            "pagingType": "full_numbers",
+            "language": {
+                "paginate": {
+                    "first": "First",
+                    "last": "Last",
+                    "next": "Next",
+                    "previous": "Previous"
+                }
+            }
+        });
+    });
+
+    function openEditPopup() {
+        $('#editProfilePopup').modal('show');
+    }
+
+    $('#editProfileForm').on('submit', function(e) {
+        e.preventDefault();
+        $('#editProfilePopup').modal('hide');
+    });
+</script>

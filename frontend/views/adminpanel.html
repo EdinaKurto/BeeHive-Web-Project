@@ -1,0 +1,167 @@
+<div id="adminpanel" class="content-section">
+    <div class="breadcrumb-section breadcrumb-bg">
+        <div class="container"><div class="row"><div class="col-lg-8 offset-lg-2 text-center"><div class="breadcrumb-text"><p>Information about</p><h1> Orders</h1></div></div></div></div>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3"><div class="card card-custom text-center"><h5>Total Orders</h5><p>126,500</p></div></div>
+            <div class="col-md-3"><div class="card card-custom text-center"><h5>Active Orders</h5><p>1,500</p></div></div>
+            <div class="col-md-3"><div class="card card-custom text-center"><h5>Completed Orders</h5><p>16,500</p></div></div>
+            <div class="col-md-3"><div class="card card-custom text-center"><h5>Return Orders</h5><p>500</p></div></div>
+        </div>
+        
+        <div class="mt-4"><h5>Recent Orders</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-order-id="789012">
+                        <td>#25426</td>
+                        <td>Nov 8, 2023</td>
+                        <td>Kavin Kavic</td>
+                        <td class="text-success">Approved</td>
+                        <td>250.00</td>
+                    </tr>
+                    <tr>
+                        <td>#25425</td>
+                        <td>Nov 7, 2023</td>
+                        <td>Komal Kindo</td>
+                        <td class="text-danger">Canceled</td>
+                        <td>280.00</td>
+                    </tr>
+                    <tr>
+                        <td>#25426</td>
+                        <td>Nov 8, 2023</td>
+                        <td>Arda Jay</td>
+                        <td class="text-success">Approved</td>
+                        <td>10.00</td>
+                    </tr>
+                    <tr>
+                        <td>#25426</td>
+                        <td>Nov 8, 2023</td>
+                        <td>Eddie Kurt</td>
+                        <td class="text-success">Delivered</td>
+                        <td>100.00</td>
+                    </tr>
+                    <tr>
+                        <td>#25425</td>
+                        <td>Nov 7, 2023</td>
+                        <td>Ave Lox</td>
+                        <td class="text-danger">Canceled</td>
+                        <td>50.00</td>
+                    </tr>
+                    <tr>
+                        <td>#25426</td>
+                        <td>Nov 8, 2023</td>
+                        <td>Kavin</td>
+                        <td class="text-success">Delivered</td>
+                        <td>20.00</td>
+                    </tr>
+                    <tr>
+                        <td>#25426</td>
+                        <td>Nov 8, 2023</td>
+                        <td>Kane Black</td>
+                        <td class="text-success">Delivered</td>
+                        <td>600.00</td>
+                    </tr>
+                    <tr>
+                        <td>#25425</td>
+                        <td>Nov 7, 2023</td>
+                        <td>John Doe</td>
+                        <td class="text-danger">Canceled</td>
+                        <td>400.00</td>
+                    </tr>
+                    <tr>
+                        <td>#25426</td>
+                        <td>Nov 8, 2023</td>
+                        <td>Wee Woo</td>
+                        <td class="text-success">Delivered</td>
+                        <td>200.00</td>
+                    </tr>
+                    <tr>
+                        <td>#25426</td>
+                        <td>Nov 8, 2023</td>
+                        <td>Ryan Renolds</td>
+                        <td class="text-success">Approved</td>
+                        <td>240.00</td>
+                    </tr>
+                    <tr>
+                        <td>#25426</td>
+                        <td>Nov 8, 2023</td>
+                        <td>Burch Family</td>
+                        <td class="text-success">Delivered</td>
+                        <td>260.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="editOrderPanel" class="content-section">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>Incomplete Orders</h5>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Example row -->
+                        <tr id="order-789012">
+                            <td>#25426</td>
+                            <td>Nov 8, 2023</td>
+                            <td>Kavin Kavic</td>
+                            <td class="order-status" data-status="Approved">Approved</td>
+                            <td>250.00</td>
+                            <td>
+                                <button class="btn btn-success update-status" data-status="Accepted">Accepted</button>
+                                <button class="btn btn-warning update-status" data-status="Shipped">Shipped</button>
+                                <button class="btn btn-danger update-status" data-status="Canceled">Canceled</button>
+                            </td>
+                        </tr>
+                        <!-- Additional rows can go here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <button class="boxed-btn" id="saveChanges">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.update-status').forEach(button => {
+        button.addEventListener('click', function () {
+            const orderRow = this.closest('tr');
+            const statusCell = orderRow.querySelector('.order-status');
+            const newStatus = this.getAttribute('data-status');
+            
+            statusCell.textContent = newStatus;
+            statusCell.className = 'order-status ' + (newStatus === 'Canceled' ? 'text-danger' : newStatus === 'Shipped' ? 'text-warning' : 'text-success');
+
+        });
+    });
+
+    document.getElementById('saveChanges').addEventListener('click', function() {
+        alert('Changes Saved!');
+    });
+</script>

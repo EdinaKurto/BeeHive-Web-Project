@@ -1,0 +1,144 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #FFF8E1; /* Light honey background */
+    color: #4E4B32; /* Dark honey yellow color for text */
+}
+
+/* Header and Card */
+.card-header {
+    background-color: #FFC107; /* Honey yellow for header */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Table Styles */
+table {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+th, td {
+    text-align: center;
+    padding: 12px;
+}
+
+th {
+    background-color: #FFB300; /* Lighter honey yellow */
+}
+
+tr:hover {
+    background-color: #FBE1A4; /* Soft honey yellow on hover */
+}
+
+/* Buttons */
+.btn {
+    font-weight: bold;
+    border-radius: 25px;
+    transition: background-color 0.3s;
+}
+
+/* Success Button (Save) */
+.btn-success {
+    background-color: #FF6F00; /* Rich honey orange */
+    border-color: #FF6F00;
+}
+
+.btn-success:hover {
+    background-color: #FF8F00;
+}
+
+/* Danger Button (Delete) */
+.btn-danger {
+    background-color: #D32F2F; /* Red for delete */
+    border-color: #D32F2F;
+}
+
+.btn-danger:hover {
+    background-color: #F44336;
+}
+
+/* Modal */
+.modal-content {
+    background-color: #FFF8E1; /* Light honey background for modal */
+}
+
+.modal-header {
+    background-color: #FFC107;
+    color: white;
+}
+
+.modal-footer .btn {
+    background-color: #FF6F00;
+    border-color: #FF6F00;
+    border-radius: 20px;
+}
+
+.modal-footer .btn:hover {
+    background-color: #FF8F00;
+}
+
+/* Input Fields */
+.form-control {
+    border: 1px solid #FFC107;
+    border-radius: 10px;
+    padding: 12px;
+    background-color: #FFEB3B; /* Light yellow background */
+}
+
+/* Search Field */
+#itemSearch {
+    border-radius: 10px;
+    border: 1px solid #FFB300;
+    padding: 8px;
+}
+
+/* Table Responsive */
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Add Item Button */
+.btn-dark {
+    background-color: #795548; /* Dark brown for contrast */
+    color: white;
+    border-radius: 20px;
+}
+
+.btn-dark:hover {
+    background-color: #5D4037;
+}
+
+/* Overall Layout */
+.container-fluid {
+    padding: 20px;
+}
+
+/* Success Message (if needed) */
+.alert-success {
+    background-color: #FFEB3B;
+    color: #4E4B32;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Special Styling for Order Table */
+.order-status {
+    border-radius: 10px;
+    border: 1px solid #FFC107;
+    background-color: #FFEB3B;
+}
+
+.order-status:focus {
+    border-color: #FF6F00;
+}
+
+/* Hover effects for rows */
+tr:hover {
+    background-color: #FFEB3B; /* Light yellow on hover */
+}
+
