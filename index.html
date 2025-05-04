@@ -5,9 +5,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>BeeHive</title>
-	<link rel="shortcut icon" type="image/png" href="frontend/img/favicon.png">
+	<link rel="shortcut icon" href="frontend/img/favicon.png" type="image/png">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+
+	<!-- Styles -->
 	<link rel="stylesheet" href="frontend/css/all.min.css">
 	<link rel="stylesheet" href="frontend/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="frontend/css/owl.carousel.css">
@@ -16,117 +18,77 @@
 	<link rel="stylesheet" href="frontend/css/meanmenu.min.css">
 	<link rel="stylesheet" href="frontend/css/main.css">
 	<link rel="stylesheet" href="frontend/css/responsive.css">
-
 	<link rel="stylesheet" href="frontend/css/spapp.css">
-
-	<script src="./frontend/js/jquery.min.js"></script>
-    <script src="./frontend/js/jquery.spapp.min.js"></script>
-    <script src="./frontend/js/script.js"></script>
 </head>
 
 <body>
-    <div class="loader"><div class="loader-inner"><div class="circle"></div></div></div>
-	<div class="top-header-area" id="sticker">
+	<div class="loader"><div class="loader-inner"><div class="circle"></div></div></div>
+
+	<!-- Header -->
+	<header class="top-header-area" id="sticker">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 col-sm-12 text-center">
+				<div class="col-12 text-center">
 					<div class="main-menu-wrap">
-						<div class="site-logo"><a href="#dashboard"><img src="frontend/img/logo.png" alt=""></a></div>
+						<div class="site-logo"><a href="#dashboard"><img src="frontend/img/logo.png" alt="BeeHive logo"></a></div>
 						<nav class="main-menu">
-							<ul>
-								<li class="nav-item"><a class="nav-link mx-2" href="#dashboard">Home</a></li>
-								<li class="nav-item"><a class="nav-link mx-2" href="#shop">Shop</a></li>
-								<li class="nav-item"><a class="nav-link mx-2" href="#blog">Blog</a></li>
-								<li class="nav-item"><a class="nav-link mx-2" href="#about">About</a></li>
-								<li class="nav-item"><a class="nav-link mx-2" href="#contact">Contact</a></li>
-								
-								<li>
-									<div class="header-icons">
-										<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-										<li class="nav-item"><a class="nav-link" href="#cart"><i class="fas fa-shopping-cart pe-2"></i></a></li>
-										<li class="nav-item"><a class="nav-link" href="#orders"><i class="fas fa-bell pe-2"></i></a></li>
-										<li class="nav-item"><a class="nav-link" href="#profile"><i class="fas fa-user pe-2"></i></a></li>
-										<li class="nav-item"><a class="nav-link mx-2" href="#adminpanel">Admin</a></li>
-										
-									</div>
-								</li>
+							<ul class="d-flex justify-content-center flex-wrap gap-2">
+								<li><a href="#dashboard">Home</a></li>
+								<li><a href="#shop">Shop</a></li>
+								<li><a href="#blog">Blog</a></li>
+								<li><a href="#about">About</a></li>
+								<li><a href="#contact">Contact</a></li>
+								<li><a href="#cart"><i class="fas fa-shopping-cart"></i></a></li>
+								<li><a href="#orders"><i class="fas fa-bell"></i></a></li>
+								<li><a href="#profile"><i class="fas fa-user"></i></a></li>
+								<li><a href="#adminpanel">Admin</a></li>
 							</ul>
-							<ul class="auth-container">
-								<div class="auth-buttons" id="auth-links">
-									<a class="btn btn-register" href="#register">Register</a>
-									<a class="btn btn-login" href="#login">Login</a>
-								</div>
-							</ul>
+
+							<div class="auth-buttons" id="auth-links">
+								<a class="btn btn-register" href="#register">Register</a>
+								<a class="btn btn-login" href="#login">Login</a>
+							</div>
 						</nav>
-						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a><div class="mobile-menu"></div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</header>
 
-	<!-- search area -->
-	<div class="search-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<span class="close-btn"><i class="fas fa-window-close"></i></span>
-					<div class="search-bar">
-						<div class="search-bar-tablecell">
-							<h3>Search For Product:</h3>
-							<input type="text" placeholder="Keywords">
-							<button type="submit">Search<i class="fas fa-search"></i></button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<section id="pageContent">
-        <main id="spapp" role="main">
-			<section id="login" data-load="login.html"></section>
-			<section id="register" data-load="register.html"></section>
-			<section id="dashboard" data-load="dashboard.html"></section>
-			<section id="adminpanel" data-load="adminpanel.html"></section>
+	<!--  SPAPP -->
+	<main id="spapp" role="main">
+		<section id="dashboard" data-load="frontend/views/dashboard.html"></section>
+		<section id="login" data-load="frontend/views/login.html"></section>
+		<section id="register" data-load="frontend/views/register.html"></section>
+		<section id="shop" data-load="frontend/views/shop.html"></section>
+		<section id="cart" data-load="frontend/views/cart.html"></section>
+		<section id="checkout" data-load="frontend/views/checkout.html"></section>
+		<section id="orders" data-load="frontend/views/orders.html"></section>
+		<section id="orders_single" data-load="frontend/views/orders_single.html"></section>
+		<section id="blog" data-load="frontend/views/blog.html"></section>
+		<section id="blog1" data-load="frontend/views/blog1.html"></section>
+		<section id="about" data-load="frontend/views/about.html"></section>
+		<section id="contact" data-load="frontend/views/contact.html"></section>
+		<section id="product1" data-load="frontend/views/product1.html"></section>
+		<section id="profile" data-load="frontend/views/profile.html"></section>
+		<section id="adminpanel" data-load="frontend/views/adminpanel.html"></section>
+	</main>
 
-			<section id="shop" data-load="shop.html"></section>
-			<section id="product1" data-load="product1.html"></section>
-
-			<section id="blog" data-load="blog.html"></section>
-			<section id="blog1" data-load="blog1.html"></section>
-
-			<section id="cart" data-load="cart.html"></section>
-			<section id="checkout" data-load="checkout.html"></section>
-	
-			<section id="profile" data-load="profile.html"></section>
-			<section id="orders" data-load="orders.html"></section>
-			<section id="orders_single" data-load="orders_single.html"></section>
-			
-			<section id="about" data-load="about.html"></section>
-			<section id="contact" data-load="contact.html"></section>
-        </main>
-    </section>
-
-	
-	<!-------------------------------------------------------------------------------------------------------------------------------------------------------------- 
-    Content for Footer
-	---------------------------------------------------------------------------------------------------------------------------------------------------------------->
-	<div class="footer-area">
+	<!-- Footer -->
+	<footer class="footer-area">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box about-widget">
 						<h2 class="widget-title">About us</h2>
-						<p>At BeeHive, we believe that nature provides the purest sweetness, and we’re dedicated to bringing it to your table. 
-							Our journey began with a simple passion: to produce high-quality, organic honey while preserving the harmony between bees and nature.</p>	
+						<p>At BeeHive, we produce high-quality organic honey while preserving the harmony between bees and nature.</p>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box get-in-touch">
 						<h2 class="widget-title">Get in Touch</h2>
 						<ul>
-							<li>71000, Sarajevo, Bosnia and Herzegovina</li>
+							<li>71000 Sarajevo, Bosnia and Herzegovina</li>
 							<li>support@beehive.com</li>
 							<li>+00 111 222 3333</li>
 						</ul>
@@ -134,18 +96,10 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	
-	<!-- jquery -->
-	<script>
-		var app = $.spapp({
-			defaultView: "#dashboard",
-			templateDir: "./frontend/views/"
-		});
-		app.run();
-	</script>
-	
-	<script src="frontend/js/jquery-1.11.3.min.js"></script>
+	</footer>
+
+	<!-- Scripts (jQuery First, then Bootstrap & Plugins) -->
+	<script src="frontend/js/jquery.min.js"></script>
 	<script src="frontend/bootstrap/js/bootstrap.min.js"></script>
 	<script src="frontend/js/jquery.countdown.js"></script>
 	<script src="frontend/js/jquery.isotope-3.0.6.min.js"></script>
@@ -153,10 +107,30 @@
 	<script src="frontend/js/owl.carousel.min.js"></script>
 	<script src="frontend/js/jquery.magnific-popup.min.js"></script>
 	<script src="frontend/js/jquery.meanmenu.min.js"></script>
+	<script src="frontend/js/jquery.spapp.min.js"></script>
 	<script src="frontend/js/sticker.js"></script>
 	<script src="frontend/js/main.js"></script>
-	<script src="frontend/js/index.js"></script>
-	<script src="frontend/js/app.js"></script>
-	<script src="frontend/js/admin.js"></script>
+	<script src="frontend/js/script.js"></script> 
+
+
+	<script>
+		var app = $.spapp({
+			defaultView: "#dashboard",
+			templateDir: "./frontend/views/"
+		});
+	
+		app.route({
+			view: "shop",
+			load: "shop.html",
+			onCreate: function () {
+				if (typeof setupShopInteractions === 'function') {
+					setTimeout(setupShopInteractions, 0);
+				}
+			}
+		});
+	
+		app.run(); 
+	</script>
+
 </body>
 </html>

@@ -12,5 +12,11 @@ class NotificationDao extends BaseDao {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+    public function markAsRead($id) {
+        $stmt = $this->connection->prepare("UPDATE notifications SET is_read = 1 WHERE notification_id = :id");
+        $stmt->execute(['id' => $id]);
+        return $stmt->rowCount();
+    }
 }
 ?>
