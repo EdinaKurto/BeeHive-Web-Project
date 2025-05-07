@@ -1,0 +1,164 @@
+import yaml
+from pathlib import Path
+
+entities = [
+    "users", "products", "orders", "categories", "blogs", "comments",
+    "messages", "notifications", "payments", "cart", "order-items",
+    "order-statuses", "roles"
+]
+
+schemas = {}
+for entity in entities:
+    singular = entity[:-1] if entity.endswith("s") and not entity.endswith("ss") else entity
+    schemas[singular.capitalize()] = {
+        "type": "object",
+        "properties": {
+            "id": {"type": "integer"},
+            "exampleField": {"type": "string"}
+        }
+    }
+
+
+openapi_yaml = {
+    "openapi": "3.0.0",
+    "info": {
+        "title": "BeeHive API",
+        "version": "1.0.0",
+        "description": "CRUD API for BeeHive project using OpenAPI standard."
+    },
+    "servers": [
+        {"url": "http://localhost/api"}
+    ],
+    "paths": {},
+    "components": {
+        "schemas": schemas
+    }
+}
+
+# Add paths for each entity
+for entity in entities:
+    singular = entity[:-1] if entity.endswith("s") and not entity.endswith("ss") else entity
+    capitalized = singular.capitalize()
+
+    openapi_yaml["paths"][f"/{entity}"] = {
+        "get": {
+            "summary": f"Get all {entity}",
+            "responses": {
+                "200": {
+                    "description": f"List of {entity}",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": f"#/components/schemas/{capitalized}"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "post": {
+            "summary": f"Create a new {singular}",
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": f"#/components/schemas/{capitalized}"
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "201": {
+                    "description": f"{capitalized} created"
+                }
+            }
+        }
+    }
+
+    openapi_yaml["paths"][f"/{entity}/{{id}}"] = {
+        "get": {
+            "summary": f"Get a specific {singular} by ID",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": f"A single {singular}",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": f"#/components/schemas/{capitalized}"
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Not Found"
+                }
+            }
+        },
+        "put": {
+            "summary": f"Update a specific {singular}",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            ],
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": f"#/components/schemas/{capitalized}"
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": f"{capitalized} updated"
+                }
+            }
+        },
+        "delete": {
+            "summary": f"Delete a specific {singular}",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            ],
+            "responses": {
+                "204": {
+                    "description": f"{capitalized} deleted"
+                }
+            }
+        }
+    }
+
+
+output_path = Path("/mnt/data/openapi.yaml")
+with output_path.open("w") as f:
+    yaml.dump(openapi_yaml, f, sort_keys=False)
+
+output_path.name

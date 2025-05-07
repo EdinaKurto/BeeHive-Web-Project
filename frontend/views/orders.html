@@ -1,127 +1,55 @@
-<div id="orders" class="content-section">
-    <div class="breadcrumb-section breadcrumb-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 offset-lg-2 text-center">
-                    <div class="breadcrumb-text">
-                        <p>Welcome to your</p>
-                        <h1>Order Overview</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid">
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
         <div class="row">
-            <div class="orders-container">
-                <div class="order-card" data-order-id="1">
-                    <div class="order-header"><h2>Order</h2></div>
-                    <div class="order-items">
-                        <h3>Items</h3>
-                        <div class="product">
-                            <div class="product-img"><img src="frontend/img/products/product-img-1.png"></div>
-                            <div class="product-details">
-                                <p><strong>Organic Honey</strong></p>
-                                <p>Qty: 2 | Price: $40.00</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="total-container">
-                        <h3 class="total-price">Total: $40.00</h3>
-                        <a href="#orders_single" class="boxed-btn view-order" data-order-id="1">View Order</a>
-                    </div>
-                </div>
-
-                <div class="order-card" data-order-id="2">
-                    <div class="order-header"><h2>Order</h2></div>
-                    <div class="order-items">
-                        <h3>Items</h3>
-                        <div class="product">
-                            <div class="product-img"><img src="frontend/img/products/product-img-2.png"></div>
-                            <div class="product-details">
-                                <p><strong>Beeswax Candle</strong></p>
-                                <p>Qty: 3 | Price: $30.00</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="total-container">
-                        <h3 class="total-price">Total: $30.00</h3>
-                        <a href="#orders_single" class="boxed-btn view-order" data-order-id="2">View Order</a>
-                    </div>
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Welcome to your</p>
+                    <h1>Order Overview</h1>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="orders_single" class="content-section" style="display:none;">
-    <div class="breadcrumb-section breadcrumb-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 offset-lg-2 text-center">
-                    <div class="breadcrumb-text">
-                        <p>Welcome to your</p>
-                        <h1>Order Details</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="orders-container">
+            <div class="order-card" data-order-id="1">
+                <div class="order-header"><h2>Order</h2></div>
+                <div class="order-items">
+                    <h3>Items</h3>
+                    <div class="product">
+                        <div class="product-img"><img src="frontend/img/products/product-img-1.png"></div>
+                        <div class="product-details">
+                            <p><strong>Organic Honey</strong></p>
+                            <p>Qty: 2 | Price: $40.00</p>
+                        </div>
                     </div>
+                </div>
+                <div class="total-container">
+                    <h3 class="total-price">Total: $40.00</h3>
+                    <a href="#orders_single" class="boxed-btn view-order" data-order-id="1">View Order</a>
+
+                </div>
+            </div>
+
+            <div class="order-card" data-order-id="2">
+                <div class="order-header"><h2>Order</h2></div>
+                <div class="order-items">
+                    <h3>Items</h3>
+                    <div class="product">
+                        <div class="product-img"><img src="frontend/img/products/product-img-2.png"></div>
+                        <div class="product-details">
+                            <p><strong>Beeswax Candle</strong></p>
+                            <p>Qty: 3 | Price: $30.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="total-container">
+                    <h3 class="total-price">Total: $30.00</h3>
+                    <a href="#orders_single" class="boxed-btn view-order" data-order-id="2">View Order</a>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="container-fluid">
-        <div class="row">
-            <main class="col-md-9 col-lg-10 p-4 d-flex">
-                <div class="order-container" style="width: 100%; padding-right: 30px; border-right: 2px solid #ddd;">
-                    <h2>Order Details</h2>
-                    <div id="order-details" class="order-items"></div>
-                    <div class="order-actions">
-                        <a href="#orders" class="boxed-btn">Back to Orders</a>
-                        <button class="delete-btn" onclick="confirmDelete()">Delete</button>
-                    </div>
-                </div>
-                <div class="user-details" style="width: 35%; padding-left: 30px;">
-                    <h3>Order Information</h3>
-                    <p><strong>Full Name:</strong> John Doe</p>
-                    <p><strong>Country:</strong> Bosnia and Herzegovina</p>
-                    <p><strong>City:</strong> Kupres</p>
-                    <p><strong>Address:</strong> Neka manje poznata ulica, 15</p>
-                    <p><strong>Order Status:</strong> Approved</p>
-                </div>
-            </main>
-        </div>
-    </div>
 </div>
-
-<script>
-    function loadContent() {
-        const hash = window.location.hash;
-        document.querySelectorAll('.content-section').forEach(section => section.style.display = 'none');
-        
-        if (hash === "#orders_single") {
-            document.getElementById('orders_single').style.display = 'block';
-        } else {
-            document.getElementById('orders').style.display = 'block';
-        }
-    }
-    
-    document.querySelectorAll('.view-order').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
-            const orderId = this.getAttribute('data-order-id');
-            const orderDetails = document.querySelector(`.order-card[data-order-id='${orderId}'] .order-items`).innerHTML;
-            document.getElementById('order-details').innerHTML = orderDetails;
-            window.location.hash = "#orders_single";
-        });
-    });
-
-    window.addEventListener('hashchange', loadContent);
-    window.addEventListener('DOMContentLoaded', loadContent);
-    
-    function confirmDelete() {
-        if (confirm("Are you sure you want to delete this order?")) {
-            alert("Order deleted!");
-            window.location.hash = "#orders";
-        }
-    }
-</script>
