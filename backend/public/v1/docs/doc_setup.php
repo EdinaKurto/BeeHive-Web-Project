@@ -5,8 +5,8 @@
  *     description="REST API for managing bee products, orders, and users",
  *     version="1.0.0",
  *     @OA\Contact(
- *         email="web2001programming@gmail.com",
- *         name="Web Programming"
+ *         email="edina.kurto@stu.ibu.edu.ba",
+ *         name="Edina Kurto"
  *     )
  * )
  */

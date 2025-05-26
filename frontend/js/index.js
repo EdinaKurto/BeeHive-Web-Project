@@ -15,7 +15,7 @@ const navigateTo = (page) => {
 // Ensure the page loads with the correct section visible
 window.addEventListener('load', () => {
     const hash = window.location.hash.substring(1); // Get the current hash
-    navigateTo(hash || 'home'); // Navigate to the correct section
+    navigateTo(hash || 'register'); // Navigate to the correct section
 });
 
 // Function to redirect to separate login/register pages
