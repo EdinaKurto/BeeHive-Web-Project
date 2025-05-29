@@ -93,3 +93,63 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+const API_BASE = "http://localhost/BeeHive-Web-Project/backend";
+const blogId = localStorage.getItem("selected_blog_id");
+
+function loadSingleBlog() {
+    fetch(`${API_BASE}/blogs/${blogId}`)
+    .then(res => res.json())
+    .then(blog => {
+        document.getElementById("blog-content").innerHTML = `
+            <img src="${blog.image_url}" alt="${blog.title}" class="img-fluid mb-4">
+            <h2>${blog.title}</h2>
+            <p><i class="fas fa-user"></i> Admin &nbsp; <i class="fas fa-calendar"></i> ${blog.published_at.split(' ')[0]}</p>
+            <p>${blog.content}</p>`;
+    });
+}
+
+function loadComments() {
+    fetch(`${API_BASE}/blogs/${blogId}/comments`)
+    .then(res => res.json())
+    .then(comments => {
+        const commentsDiv = document.getElementById("comments");
+        commentsDiv.innerHTML = "<h5>Comments:</h5>";
+
+        comments.forEach(c => {
+            commentsDiv.innerHTML += `
+                <div class="border p-2 mb-2">
+                    <strong>${c.full_name}</strong> <span class="text-muted">${c.created_at.split(' ')[0]}</span>
+                    <p>${c.comment}</p>
+                </div>`;
+        });
+    });
+}
+
+document.getElementById("comment-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const full_name = document.getElementById("comment-name").value.trim();
+    const email = document.getElementById("comment-email").value.trim();
+    const comment = document.getElementById("comment-message").value.trim();
+
+    fetch(`${API_BASE}/blogs/${blogId}/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ full_name, email, comment })
+    })
+    .then(() => {
+        this.reset();
+        loadComments();
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (!blogId) return window.location.hash = "#blog";
+    loadSingleBlog();
+    loadComments();
+});
+</script>

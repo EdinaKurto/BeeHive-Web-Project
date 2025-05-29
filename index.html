@@ -19,6 +19,15 @@
 	<link rel="stylesheet" href="frontend/css/main.css">
 	<link rel="stylesheet" href="frontend/css/responsive.css">
 	<link rel="stylesheet" href="frontend/css/spapp.css">
+	<style>
+        header#sticker {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+        }
+    </style>
 </head>
 
 <body>
@@ -32,23 +41,22 @@
 					<div class="main-menu-wrap">
 						<div class="site-logo"><a href="#dashboard"><img src="frontend/img/logo.png" alt="BeeHive logo"></a></div>
 						<nav class="main-menu">
-							<ul class="d-flex justify-content-center flex-wrap gap-2">
-								<li><a href="#dashboard">Home</a></li>
-								<li><a href="#shop">Shop</a></li>
-								<li><a href="#blog">Blog</a></li>
-								<li><a href="#about">About</a></li>
-								<li><a href="#contact">Contact</a></li>
-								<li><a href="#cart"><i class="fas fa-shopping-cart"></i></a></li>
-								<li><a href="#orders"><i class="fas fa-bell"></i></a></li>
-								<li><a href="#profile"><i class="fas fa-user"></i></a></li>
-								<li><a href="#adminpanel">Admin</a></li>
-							</ul>
+                            <ul class="d-flex justify-content-center flex-wrap gap-2">
+								<!-- Admin-only links -->
+                                <li id="adminNav" style="display:none;"><a href="#adminpanel">Admin Panel</a></li>
 
-							<div class="auth-buttons" id="auth-links">
-								<a class="btn btn-register" href="#register">Register</a>
-								<a class="btn btn-login" href="#login">Login</a>
-							</div>
-						</nav>
+
+                                <li><a href="#dashboard">Home</a></li>
+                                <li><a href="#shop">Shop</a></li>
+                                <li><a href="#blog">Blog</a></li>
+                                <li><a href="#about">About</a></li>
+                                <li><a href="#contact">Contact</a></li>
+                                <li><a href="#cart"><i class="fas fa-shopping-cart"></i></a></li>
+                                <li><a href="#orders"><i class="fas fa-bell"></i></a></li>
+                                <li><a href="#profile"><i class="fas fa-user"></i></a></li>
+                                <li><a href="#" id="logoutBtn">Logout</a></li>
+                            </ul>
+                        </nav>
 					</div>
 				</div>
 			</div>
@@ -98,39 +106,14 @@
 		</div>
 	</footer>
 
-	<!-- Scripts (jQuery First, then Bootstrap & Plugins) -->
+	<!-- Scripts -->
 	<script src="frontend/js/jquery.min.js"></script>
 	<script src="frontend/bootstrap/js/bootstrap.min.js"></script>
-	<script src="frontend/js/jquery.countdown.js"></script>
 	<script src="frontend/js/jquery.isotope-3.0.6.min.js"></script>
-	<script src="frontend/js/waypoints.js"></script>
-	<script src="frontend/js/owl.carousel.min.js"></script>
-	<script src="frontend/js/jquery.magnific-popup.min.js"></script>
 	<script src="frontend/js/jquery.meanmenu.min.js"></script>
 	<script src="frontend/js/jquery.spapp.min.js"></script>
-	<script src="frontend/js/sticker.js"></script>
 	<script src="frontend/js/main.js"></script>
 	<script src="frontend/js/script.js"></script> 
-
-
-	<script>
-		var app = $.spapp({
-			defaultView: "#dashboard",
-			templateDir: "./frontend/views/"
-		});
-	
-		app.route({
-			view: "shop",
-			load: "shop.html",
-			onCreate: function () {
-				if (typeof setupShopInteractions === 'function') {
-					setTimeout(setupShopInteractions, 0);
-				}
-			}
-		});
-	
-		app.run(); 
-	</script>
 
 </body>
 </html>
