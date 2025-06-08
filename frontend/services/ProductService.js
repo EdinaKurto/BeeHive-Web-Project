@@ -1,4 +1,3 @@
-
 var ProductService = {
   init: function () {
     FormValidation.validate(

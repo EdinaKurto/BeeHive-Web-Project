@@ -49,4 +49,15 @@ class ProductDao extends BaseDao {
     public function delete_product($product_id) {
         return $this->delete("products", "product_id", $product_id);
     }
+
+    public function getAllWithCategory() {
+        $stmt = $this->connection->prepare("
+            SELECT p.*, c.name AS category_name
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

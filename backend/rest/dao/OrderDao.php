@@ -92,4 +92,17 @@ class OrderDao extends BaseDao {
         $stmt = $this->connection->prepare("DELETE FROM orders WHERE order_id = :order_id");
         $stmt->execute(['order_id' => $order_id]);
     }
+
+    public function get_order_by_id($order_id) {
+        $stmt = $this->connection->prepare("
+            SELECT o.*, s.status_name, u.full_name
+            FROM orders o
+            JOIN order_statuses s ON o.status_id = s.status_id
+            JOIN users u ON o.user_id = u.user_id
+            WHERE o.order_id = :order_id
+        ");
+        $stmt->execute(['order_id' => $order_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 }
