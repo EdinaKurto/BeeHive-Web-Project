@@ -1,28 +1,26 @@
-// Function to handle SPA navigation (for sections within the same page)
+// Function to handle SPA navigation
 const navigateTo = (page) => {
     const sections = document.querySelectorAll('.content-section');
     sections.forEach(section => section.style.display = 'none'); // Hide all sections
 
-    const selectedSection = document.getElementById(page); // Get the selected section
+    const selectedSection = document.getElementById(page); 
     if (selectedSection) {
-        selectedSection.style.display = 'block'; // Show the selected section
-        history.pushState({ page }, "", `#${page}`); // Update the URL hash
+        selectedSection.style.display = 'block';
+        history.pushState({ page }, "", `#${page}`); 
     }
 
-    toggleHomeSlider(); // Ensure slider visibility is updated
+    toggleHomeSlider();
 };
 
 // Ensure the page loads with the correct section visible
 window.addEventListener('load', () => {
     const hash = window.location.hash.substring(1); // Get the current hash
-    navigateTo(hash || 'register'); // Navigate to the correct section
+    navigateTo(hash || 'register'); 
 });
 
-// Function to redirect to separate login/register pages
 const redirectToAuth = (page) => {
     window.location.href = page; 
 };
-
 
 // Function to toggle the home slider based on section visibility
 function toggleHomeSlider() {
@@ -42,7 +40,7 @@ function toggleHomeSlider() {
 document.body.addEventListener("click", (event) => {
     const target = event.target.closest("a");
     if (target) {
-        toggleHomeSlider(); // Update slider state after clicking any nav link
+        toggleHomeSlider();
     }
 });
 
@@ -64,16 +62,14 @@ function toggleHomeSlider() {
     }
 }
 toggleHomeSlider();
-
-// Observe changes in the content visibility
 document.addEventListener("click", function(event) {
-    setTimeout(toggleHomeSlider, 100); // Delay to allow SPA navigation to update
+    setTimeout(toggleHomeSlider, 100);
 });
 
 //--------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
     let currentPage = 1;
-    const totalPages = 3; // Change this if you have more pages
+    const totalPages = 3;
 
     function updatePagination() {
         const paginationLinks = document.querySelectorAll("#pagination li a");
@@ -101,11 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         updatePagination();
-
-        // Perform content update logic here (e.g., fetch new page data)
         console.log("Page changed to:", currentPage);
     };
-
-    // Initialize pagination
     updatePagination();
 });

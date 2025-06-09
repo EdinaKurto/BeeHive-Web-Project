@@ -34,8 +34,6 @@ $(document).ready(function () {
                 </tr>
             `);
         });
-
-        // Re-init DataTable
         $('#ordersTable').DataTable();
     }
 

@@ -1,9 +1,6 @@
 (function ($) {
     "use strict";
-
     $(document).ready(function () {
-
-        // light box
         $('.image-popup-vertical-fit').magnificPopup({
             type: 'image',
             closeOnContentClick: true,

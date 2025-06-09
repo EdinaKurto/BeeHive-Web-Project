@@ -2,11 +2,11 @@ $.spapp.debug = true;
 
 const API_BASE = "http://localhost/BeeHive-Web-Project/backend";
 
-// Determine role-based start view
+// Role-based start view
 const savedRole = localStorage.getItem("role");
 const startView = savedRole === "admin" ? "#adminpanel" : "#dashboard";
 
-// Initialize SPApp
+// Initialize SPAPP
 var app = $.spapp({
     defaultView: startView,
     templateDir: "frontend/views/"
@@ -37,7 +37,7 @@ app.route({
                 const email = document.getElementById("login-email").value.trim();
                 const password = document.getElementById("login-password").value;
 
-                // Client-side validation
+                // Client-side validations
                 if (!email || !password) {
                     alert("Both email and password are required.");
                     return;
@@ -167,7 +167,7 @@ app.route({
     }
 });
 
-// LOGOUT logic
+// LOGOUT
 document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener("hashchange", updateUIBasedOnRole);
 
-// Cart route (unchanged)
+// Cart
 app.route({
     view: "cart",
     load: "cart.html",

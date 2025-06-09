@@ -3,7 +3,7 @@ var Constants = {
         if (location.hostname === "localhost") {
             return "http://localhost/BeeHive-Web-Project/backend"; 
         } else {
-            return "https://your-production-domain.com"; 
+            return "https://beehive-knttn.ondigitalocean.app"; 
         }
     },
     USER_ROLE: "user",

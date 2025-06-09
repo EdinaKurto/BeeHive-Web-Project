@@ -9,12 +9,11 @@ require_once __DIR__ . '/config.php';
 
 Flight::register('auth_middleware', 'AuthMiddleware');
 
-// enable test mode
 if (php_sapi_name() === 'cli') {
     define("UNIT_TESTING", true);
 }
 
-// JWT-based auth middleware before each route (except public ones)
+// JWT-based auth middleware before each route
 Flight::before('start', function () {
     if (defined('UNIT_TESTING') && UNIT_TESTING) return;
 
