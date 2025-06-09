@@ -11,20 +11,49 @@
   </div>
 </div>
 
+<style>
+  .bg-orange {
+    background-color: #ec8e40 !important;
+  }
+  .border-orange {
+    border-color: #ec8e40 !important;
+  }
+  .btn-orange {
+    background-color: #ec8e40;
+    color: white;
+    border: none;
+  }
+  .btn-orange:hover {
+    background-color: #e76c00;
+  }
+  .btn-outline-orange {
+    color: #ec8e40;
+    border-color: #ec8e40;
+  }
+  .btn-outline-orange:hover {
+    background-color: #ec8e40;
+    color: white;
+  }
+  table.dataTable thead th {
+    background-color: #ec8e40;
+    color: white;
+  }
+</style>
+
 <div class="container-fluid mt-4">
   <!-- Order Stats -->
   <div class="row text-center mb-4">
-    <div class="col-md-3"><div class="card card-custom"><h5>Total Orders</h5><p id="totalOrders">...</p></div></div>
-    <div class="col-md-3"><div class="card card-custom"><h5>Active Orders</h5><p id="activeOrders">...</p></div></div>
-    <div class="col-md-3"><div class="card card-custom"><h5>Completed Orders</h5><p id="completedOrders">...</p></div></div>
-    <div class="col-md-3"><div class="card card-custom"><h5>Canceled Orders</h5><p id="canceledOrders">...</p></div></div>
+    <div class="col-md-3"><div class="card border-orange"><h5>Total Orders</h5><p id="totalOrders">...</p></div></div>
+    <div class="col-md-3"><div class="card border-orange"><h5>Active Orders</h5><p id="activeOrders">...</p></div></div>
+    <div class="col-md-3"><div class="card border-orange"><h5>Completed Orders</h5><p id="completedOrders">...</p></div></div>
+    <div class="col-md-3"><div class="card border-orange"><h5>Canceled Orders</h5><p id="canceledOrders">...</p></div></div>
   </div>
 
   <!-- Orders Table -->
   <div class="row mb-5">
     <div class="col-lg-12">
-      <div class="card border-success mx-3">
-        <div class="card-header bg-success text-white">
+      <div class="card border-orange mx-3">
+        <div class="card-header bg-orange text-white">
           <h5 class="mb-0">Orders Management</h5>
         </div>
         <div class="card-body">
@@ -53,8 +82,8 @@
   <!-- Items Table -->
   <div class="row mb-5">
     <div class="col-lg-12">
-      <div class="card border-success mx-3">
-        <div class="card-header bg-success d-flex justify-content-between align-items-center">
+      <div class="card border-orange mx-3">
+        <div class="card-header bg-orange d-flex justify-content-between align-items-center">
           <h5 class="text-white mb-0">Items Management</h5>
           <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addItemModal">Add New Item</button>
         </div>
@@ -106,8 +135,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-success">Save</button>
+          <button type="button" class="btn btn-outline-orange" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-orange">Save</button>
         </div>
       </form>
     </div>
@@ -151,8 +180,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-success">Save</button>
+          <button type="button" class="btn btn-outline-orange" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-orange">Save</button>
         </div>
       </form>
     </div>

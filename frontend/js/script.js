@@ -254,3 +254,62 @@ function updateUIBasedOnRole() {
         window.location.hash = "#login";
     }
 }
+
+app.route({
+    view: "orders_single",
+    load: "orders_single.html",
+    onCreate: function () {
+        const orderId = window.location.hash.split("/")[1];
+        document.getElementById("orders-single-view").dataset.orderId = orderId;
+        fetch(`${API_BASE}/orders/${orderId}`, {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+
+        })
+        .catch(err => {
+            console.error("Order load failed", err);
+            alert("Failed to load order.");
+            window.location.hash = "#orders";
+        });
+    }
+});
+
+function getOrderIdFromHash() {
+    const hash = window.location.hash;
+    const match = hash.match(/orders_single\/(\d+)/);
+    return match ? match[1] : null;
+}
+
+function confirmDelete() {
+    const container = document.getElementById("orders-single-view");
+    const orderId = container?.dataset?.orderId;
+
+    if (!orderId) {
+        alert("Order ID not found.");
+        return;
+    }
+
+    if (!confirm("Are you sure you want to delete this order?")) return;
+
+    const token = localStorage.getItem("token");
+
+    fetch(`${API_BASE}/orders/${orderId}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Delete failed");
+        alert("Order deleted successfully.");
+        window.location.hash = "#orders";
+    })
+    .catch(err => {
+        console.error("Delete error:", err);
+        alert("Failed to delete order.");
+    });
+}
