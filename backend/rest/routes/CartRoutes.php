@@ -1,70 +1,57 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET,PUT,POST,DELETE,PATCH,OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+$authMiddleware = new AuthMiddleware();
 
-require_once __DIR__ . '/../services/CartService.php';
-require_once __DIR__ . '/../../utils/MessageHandler.php';
+Flight::route("GET /cart", function () use ($authMiddleware) {
+    $headers = getallheaders();
+    $token = str_replace("Bearer ", "", $headers["Authorization"] ?? "");
+    $authMiddleware->verifyToken($token);
 
-Flight::set('cart_service', new CartService());
+    $user = Flight::get("user");
+    Flight::json(Flight::cartService()->get_items_by_user($user->id));
+});
 
-Flight::group('/cart', function () {
-    
-    Flight::route('GET /', function () {
-        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
-        $user_id = Flight::get('user')->id;
+Flight::route("PUT /cart/update", function () use ($authMiddleware) {
+    $headers = getallheaders();
+    $token = str_replace("Bearer ", "", $headers["Authorization"] ?? "");
+    $authMiddleware->verifyToken($token);
 
-        $search = Flight::query('search', '');
-        $sort_by = Flight::query('sort_by', 'name');
-        $sort_order = Flight::query('sort_order', 'asc');
+    $user = Flight::get("user");
+    $data = Flight::request()->data->getData();
 
-        $response = Flight::get('cart_service')->get_filtered_cart($user_id, $search, $sort_by, $sort_order);
-        MessageHandler::handleServiceResponse($response);
-    });
+    if (!isset($data["product_id"], $data["quantity"])) {
+        Flight::halt(400, "Missing product ID or quantity.");
+    }
 
-    Flight::route('GET /summary', function () {
-        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
-        $user_id = Flight::get('user')->id;
+    Flight::cartService()->update_quantity($user->id, $data["product_id"], $data["quantity"]);
+    Flight::json(["message" => "Quantity updated"]);
+});
 
-        $summary = Flight::get('cart_service')->get_cart_summary_by_user($user_id);
-        MessageHandler::handleServiceResponse($summary);
-    });
+Flight::route("DELETE /cart/remove/@id", function ($product_id) use ($authMiddleware) {
+    $headers = getallheaders();
+    $token = str_replace("Bearer ", "", $headers["Authorization"] ?? "");
+    $authMiddleware->verifyToken($token);
 
-    Flight::route('POST /add', function () {
-        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
-        $user_id = Flight::get('user')->id;
-        $data = Flight::request()->data->getData();
+    $user = Flight::get("user");
+    Flight::cartService()->remove_item($user->id, $product_id);
+    Flight::json(["message" => "Item removed"]);
+});
 
-        $result = Flight::get('cart_service')->add_to_cart($user_id, $data['product_id'] ?? null);
-        MessageHandler::handleServiceResponse($result, 'Item added to cart');
-    });
+Flight::route("DELETE /cart/clear", function () use ($authMiddleware) {
+    $headers = getallheaders();
+    $token = str_replace("Bearer ", "", $headers["Authorization"] ?? "");
+    $authMiddleware->verifyToken($token);
 
-    Flight::route('PUT /update', function () {
-        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
-        $user_id = Flight::get('user')->id;
-        $data = Flight::request()->data->getData();
+    $user = Flight::get("user");
+    Flight::cartService()->clear($user->id);
+    Flight::json(["message" => "Cart cleared"]);
+});
 
-        $result = Flight::get('cart_service')->update_quantity(
-            $user_id,
-            $data['product_id'] ?? null,
-            $data['quantity'] ?? null
-        );
-        MessageHandler::handleServiceResponse($result, 'Cart updated');
-    });
+Flight::route("GET /cart/summary", function () use ($authMiddleware) {
+    $headers = getallheaders();
+    $token = str_replace("Bearer ", "", $headers["Authorization"] ?? "");
+    $authMiddleware->verifyToken($token);
 
-    Flight::route('DELETE /remove/@product_id', function ($product_id) {
-        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
-        $user_id = Flight::get('user')->id;
-
-        $result = Flight::get('cart_service')->remove_from_cart($user_id, $product_id);
-        MessageHandler::handleServiceResponse($result, 'Item removed from cart');
-    });
-
-    Flight::route('DELETE /clear', function () {
-        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
-        $user_id = Flight::get('user')->id;
-
-        $result = Flight::get('cart_service')->clear_cart($user_id);
-        MessageHandler::handleServiceResponse($result, 'Cart cleared');
-    });
+    $user = Flight::get("user");
+    $total = Flight::cartService()->get_total_price_by_user($user->id);
+    Flight::json(["total_value" => $total]);
 });

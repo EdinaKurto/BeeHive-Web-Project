@@ -169,9 +169,8 @@ window.addEventListener("hashchange", updateUIBasedOnRole);
 
 app.route({
     view: "cart",
-    load: "frontend/views/cart.html",
+    load: "cart.html", 
     onCreate: function () {
-        const API_BASE = "http://localhost/BeeHive-Web-Project/backend";
         const token = localStorage.getItem("token");
 
         if (!token) {
@@ -182,7 +181,10 @@ app.route({
         fetch(`${API_BASE}/cart`, {
             headers: { "Authorization": `Bearer ${token}` }
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error("Server error");
+            return res.json();
+        })
         .then(items => {
             const cartBody = document.querySelector(".cart-table tbody");
             cartBody.innerHTML = "";
@@ -203,61 +205,14 @@ app.route({
 
             attachCartListeners(token, API_BASE);
             updateSummary(token, API_BASE);
+        })
+        .catch(err => {
+            console.error("Cart load failed:", err);
+            alert("Failed to load cart. Are you logged in?");
         });
-
-        function attachCartListeners(token, API_BASE) {
-            document.querySelectorAll(".quantity-input").forEach(input => {
-                input.addEventListener("change", function () {
-                    const productId = this.dataset.id;
-                    const quantity = this.value;
-                    fetch(`${API_BASE}/cart/update`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`
-                        },
-                        body: JSON.stringify({ product_id: productId, quantity })
-                    }).then(() => app.show("cart")); // reload SPA view
-                });
-            });
-
-            document.querySelectorAll(".remove-btn").forEach(btn => {
-                btn.addEventListener("click", function () {
-                    const productId = this.dataset.id;
-                    fetch(`${API_BASE}/cart/remove/${productId}`, {
-                        method: "DELETE",
-                        headers: { "Authorization": `Bearer ${token}` }
-                    }).then(() => app.show("cart"));
-                });
-            });
-
-            const clearBtn = document.getElementById("clear-cart-btn");
-            if (clearBtn) {
-                clearBtn.addEventListener("click", () => {
-                    if (confirm("Clear all items?")) {
-                        fetch(`${API_BASE}/cart/clear`, {
-                            method: "DELETE",
-                            headers: { "Authorization": `Bearer ${token}` }
-                        }).then(() => app.show("cart"));
-                    }
-                });
-            }
-        }
-
-        function updateSummary(token, API_BASE) {
-            fetch(`${API_BASE}/cart/summary`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            })
-            .then(res => res.json())
-            .then(summary => {
-                const subtotal = parseFloat(summary.total_value || 0);
-                document.getElementById("subtotal").textContent = `$${subtotal.toFixed(2)}`;
-                document.getElementById("shipping").textContent = "$45.00";
-                document.getElementById("total").textContent = `$${(subtotal + 45).toFixed(2)}`;
-            });
-        }
     }
 });
+
 
 function updateUIBasedOnRole() {
     const token = localStorage.getItem("token");
