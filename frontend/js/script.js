@@ -2,7 +2,7 @@ $.spapp.debug = true;
 
 const API_BASE = "http://localhost/BeeHive-Web-Project/backend";
 
-// Determine role-based start view BEFORE app runs
+// Determine role-based start view
 const savedRole = localStorage.getItem("role");
 const startView = savedRole === "admin" ? "#adminpanel" : "#dashboard";
 
@@ -15,22 +15,11 @@ var app = $.spapp({
 const staticViews = [
     "login", "register", "dashboard", "adminpanel", "shop",
     "product1", "blog", "blog1", "cart", "checkout",
-    "profile", "orders", "orders_single", "about", "contact", 
+    "profile", "orders", "orders_single", "about", "contact",
 ];
 
 staticViews.forEach(view => {
     app.route({ view: view, load: `${view}.html` });
-});
-
-// Shop logic
-app.route({
-    view: "shop",
-    load: "shop.html",
-    onCreate: function () {
-        if (typeof setupShopInteractions === 'function') {
-            setupShopInteractions();
-        }
-    }
 });
 
 // LOGIN route
@@ -44,8 +33,21 @@ app.route({
         if (form) {
             form.addEventListener("submit", async function (e) {
                 e.preventDefault();
-                const email = document.getElementById("login-email").value;
+
+                const email = document.getElementById("login-email").value.trim();
                 const password = document.getElementById("login-password").value;
+
+                // Client-side validation
+                if (!email || !password) {
+                    alert("Both email and password are required.");
+                    return;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert("Invalid email format.");
+                    return;
+                }
 
                 try {
                     const res = await fetch(`${API_BASE}/auth/login`, {
@@ -57,7 +59,7 @@ app.route({
                     const contentType = res.headers.get("content-type");
                     let data;
 
-                    if (res.ok && contentType && contentType.includes("application/json")) {
+                    if (res.ok && contentType?.includes("application/json")) {
                         data = await res.json();
                     } else {
                         const errorText = await res.text();
@@ -104,6 +106,23 @@ app.route({
                 const password = document.getElementById("register-password").value;
                 const confirm_password = document.getElementById("register-confirm-password").value;
 
+                // Validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert("Please enter a valid email address.");
+                    return;
+                }
+
+                if (full_name.length < 3) {
+                    alert("Username must be at least 3 characters long.");
+                    return;
+                }
+
+                if (password.length < 6) {
+                    alert("Password must be at least 6 characters long.");
+                    return;
+                }
+
                 if (password !== confirm_password) {
                     alert("Passwords do not match.");
                     return;
@@ -119,7 +138,7 @@ app.route({
                     const contentType = res.headers.get("content-type");
                     let data;
 
-                    if (res.ok && contentType && contentType.includes("application/json")) {
+                    if (res.ok && contentType?.includes("application/json")) {
                         data = await res.json();
                     } else {
                         const errorText = await res.text();
@@ -148,7 +167,7 @@ app.route({
     }
 });
 
-// LOGOUT
+// LOGOUT logic
 document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
@@ -162,17 +181,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     updateUIBasedOnRole();
-    app.run(); // Start SPApp after DOM and roles are ready
+    app.run();
 });
 
 window.addEventListener("hashchange", updateUIBasedOnRole);
 
+// Cart route (unchanged)
 app.route({
     view: "cart",
-    load: "cart.html", 
+    load: "cart.html",
     onCreate: function () {
         const token = localStorage.getItem("token");
-
         if (!token) {
             window.location.hash = "#login";
             return;
@@ -212,7 +231,6 @@ app.route({
         });
     }
 });
-
 
 function updateUIBasedOnRole() {
     const token = localStorage.getItem("token");
