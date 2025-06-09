@@ -1,5 +1,4 @@
 <?php
-
 require_once 'BaseDao.php';
 
 class ContactMessageDao extends BaseDao {

@@ -88,4 +88,16 @@ class CartDao extends BaseDao {
         $query .= " ORDER BY $sort_by $sort_order";
         return $this->query($query, $params);
     }
+
+    public function getCartTotal($userId) {
+        $stmt = $this->connection->prepare("
+            SELECT SUM(p.price * c.quantity) AS total
+            FROM cart c
+            JOIN products p ON c.product_id = p.id
+            WHERE c.user_id = ?
+        ");
+        $stmt->execute([$userId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
 }

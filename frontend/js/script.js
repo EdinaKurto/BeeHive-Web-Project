@@ -2,11 +2,11 @@ $.spapp.debug = true;
 
 const API_BASE = "http://localhost/BeeHive-Web-Project/backend";
 
-// Determine role-based start view BEFORE app runs
+// Role-based start view
 const savedRole = localStorage.getItem("role");
 const startView = savedRole === "admin" ? "#adminpanel" : "#dashboard";
 
-// Initialize SPApp
+// Initialize SPAPP
 var app = $.spapp({
     defaultView: startView,
     templateDir: "frontend/views/"
@@ -15,22 +15,11 @@ var app = $.spapp({
 const staticViews = [
     "login", "register", "dashboard", "adminpanel", "shop",
     "product1", "blog", "blog1", "cart", "checkout",
-    "profile", "orders", "orders_single", "about", "contact", 
+    "profile", "orders", "orders_single", "about", "contact",
 ];
 
 staticViews.forEach(view => {
     app.route({ view: view, load: `${view}.html` });
-});
-
-// Shop logic
-app.route({
-    view: "shop",
-    load: "shop.html",
-    onCreate: function () {
-        if (typeof setupShopInteractions === 'function') {
-            setupShopInteractions();
-        }
-    }
 });
 
 // LOGIN route
@@ -44,8 +33,21 @@ app.route({
         if (form) {
             form.addEventListener("submit", async function (e) {
                 e.preventDefault();
-                const email = document.getElementById("login-email").value;
+
+                const email = document.getElementById("login-email").value.trim();
                 const password = document.getElementById("login-password").value;
+
+                // Client-side validations
+                if (!email || !password) {
+                    alert("Both email and password are required.");
+                    return;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert("Invalid email format.");
+                    return;
+                }
 
                 try {
                     const res = await fetch(`${API_BASE}/auth/login`, {
@@ -57,7 +59,7 @@ app.route({
                     const contentType = res.headers.get("content-type");
                     let data;
 
-                    if (res.ok && contentType && contentType.includes("application/json")) {
+                    if (res.ok && contentType?.includes("application/json")) {
                         data = await res.json();
                     } else {
                         const errorText = await res.text();
@@ -104,6 +106,23 @@ app.route({
                 const password = document.getElementById("register-password").value;
                 const confirm_password = document.getElementById("register-confirm-password").value;
 
+                // Validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert("Please enter a valid email address.");
+                    return;
+                }
+
+                if (full_name.length < 3) {
+                    alert("Username must be at least 3 characters long.");
+                    return;
+                }
+
+                if (password.length < 6) {
+                    alert("Password must be at least 6 characters long.");
+                    return;
+                }
+
                 if (password !== confirm_password) {
                     alert("Passwords do not match.");
                     return;
@@ -119,7 +138,7 @@ app.route({
                     const contentType = res.headers.get("content-type");
                     let data;
 
-                    if (res.ok && contentType && contentType.includes("application/json")) {
+                    if (res.ok && contentType?.includes("application/json")) {
                         data = await res.json();
                     } else {
                         const errorText = await res.text();
@@ -162,18 +181,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     updateUIBasedOnRole();
-    app.run(); // Start SPApp after DOM and roles are ready
+    app.run();
 });
 
 window.addEventListener("hashchange", updateUIBasedOnRole);
 
+// Cart
 app.route({
     view: "cart",
-    load: "frontend/views/cart.html",
+    load: "cart.html",
     onCreate: function () {
-        const API_BASE = "http://localhost/BeeHive-Web-Project/backend";
         const token = localStorage.getItem("token");
-
         if (!token) {
             window.location.hash = "#login";
             return;
@@ -182,7 +200,10 @@ app.route({
         fetch(`${API_BASE}/cart`, {
             headers: { "Authorization": `Bearer ${token}` }
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error("Server error");
+            return res.json();
+        })
         .then(items => {
             const cartBody = document.querySelector(".cart-table tbody");
             cartBody.innerHTML = "";
@@ -203,59 +224,11 @@ app.route({
 
             attachCartListeners(token, API_BASE);
             updateSummary(token, API_BASE);
+        })
+        .catch(err => {
+            console.error("Cart load failed:", err);
+            alert("Failed to load cart. Are you logged in?");
         });
-
-        function attachCartListeners(token, API_BASE) {
-            document.querySelectorAll(".quantity-input").forEach(input => {
-                input.addEventListener("change", function () {
-                    const productId = this.dataset.id;
-                    const quantity = this.value;
-                    fetch(`${API_BASE}/cart/update`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`
-                        },
-                        body: JSON.stringify({ product_id: productId, quantity })
-                    }).then(() => app.show("cart")); // reload SPA view
-                });
-            });
-
-            document.querySelectorAll(".remove-btn").forEach(btn => {
-                btn.addEventListener("click", function () {
-                    const productId = this.dataset.id;
-                    fetch(`${API_BASE}/cart/remove/${productId}`, {
-                        method: "DELETE",
-                        headers: { "Authorization": `Bearer ${token}` }
-                    }).then(() => app.show("cart"));
-                });
-            });
-
-            const clearBtn = document.getElementById("clear-cart-btn");
-            if (clearBtn) {
-                clearBtn.addEventListener("click", () => {
-                    if (confirm("Clear all items?")) {
-                        fetch(`${API_BASE}/cart/clear`, {
-                            method: "DELETE",
-                            headers: { "Authorization": `Bearer ${token}` }
-                        }).then(() => app.show("cart"));
-                    }
-                });
-            }
-        }
-
-        function updateSummary(token, API_BASE) {
-            fetch(`${API_BASE}/cart/summary`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            })
-            .then(res => res.json())
-            .then(summary => {
-                const subtotal = parseFloat(summary.total_value || 0);
-                document.getElementById("subtotal").textContent = `$${subtotal.toFixed(2)}`;
-                document.getElementById("shipping").textContent = "$45.00";
-                document.getElementById("total").textContent = `$${(subtotal + 45).toFixed(2)}`;
-            });
-        }
     }
 });
 
@@ -280,4 +253,63 @@ function updateUIBasedOnRole() {
     if (!token && !["#login", "#register"].includes(window.location.hash)) {
         window.location.hash = "#login";
     }
+}
+
+app.route({
+    view: "orders_single",
+    load: "orders_single.html",
+    onCreate: function () {
+        const orderId = window.location.hash.split("/")[1];
+        document.getElementById("orders-single-view").dataset.orderId = orderId;
+        fetch(`${API_BASE}/orders/${orderId}`, {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+
+        })
+        .catch(err => {
+            console.error("Order load failed", err);
+            alert("Failed to load order.");
+            window.location.hash = "#orders";
+        });
+    }
+});
+
+function getOrderIdFromHash() {
+    const hash = window.location.hash;
+    const match = hash.match(/orders_single\/(\d+)/);
+    return match ? match[1] : null;
+}
+
+function confirmDelete() {
+    const container = document.getElementById("orders-single-view");
+    const orderId = container?.dataset?.orderId;
+
+    if (!orderId) {
+        alert("Order ID not found.");
+        return;
+    }
+
+    if (!confirm("Are you sure you want to delete this order?")) return;
+
+    const token = localStorage.getItem("token");
+
+    fetch(`${API_BASE}/orders/${orderId}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Delete failed");
+        alert("Order deleted successfully.");
+        window.location.hash = "#orders";
+    })
+    .catch(err => {
+        console.error("Delete error:", err);
+        alert("Failed to delete order.");
+    });
 }

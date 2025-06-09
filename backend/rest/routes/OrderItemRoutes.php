@@ -41,4 +41,11 @@ Flight::group('/order_item', function () {
         MessageHandler::handleServiceResponse($result, "Item added to order");
     });
 
+    Flight::route('GET /@order_id', function ($order_id) {
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $items = Flight::get('order_item_service')->get_items_by_order($order_id);
+        MessageHandler::handleServiceResponse($items);
+    });
+
+
 });

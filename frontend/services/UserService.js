@@ -1,4 +1,3 @@
-
 var UserService = {
   get_user: function () {
     RestClient.get("users/current", function (response) {

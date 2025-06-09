@@ -62,4 +62,9 @@ class OrderService {
     public function delete_order($order_id) {
         return $this->orderDao->delete_order($order_id);
     }
+
+    public function get_order_by_id($order_id) {
+        return $this->orderDao->get_order_by_id($order_id);
+    }
+
 }

@@ -23,6 +23,7 @@ class Config {
         return Config::get_env("JWT_SECRET", ',dpPL,Se%fM-UVQBwf/XXT&B!AF6%}');
     }
     public static function get_env($name, $default){
-        return isset($_ENV[$name]) && trim($_ENV[$name]) != "" ? $_ENV[$name] : $default;
+    return isset($_ENV[$name]) && trim($_ENV[$name]) != "" ? $_ENV[$name] :
+    $default;
     }
 }

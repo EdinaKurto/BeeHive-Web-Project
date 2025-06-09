@@ -103,9 +103,31 @@ Flight::group('/order', function () {
      * )
      */
     Flight::route('DELETE /@order_id', function ($order_id) {
-        Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
-        Flight::get('order_service')->delete_order($order_id);
+        $headers = getallheaders();
+        $token = str_replace("Bearer ", "", $headers["Authorization"] ?? "");
+        $auth = new AuthMiddleware();
+        $auth->verifyToken($token);
+        $user = Flight::get("user");
+
+        if (!$user || ($user->role_id !== 1 && !Flight::orderService()->user_owns_order($user->id, $order_id))) {
+            Flight::halt(403, "Unauthorized to delete this order.");
+        }
+
+        Flight::orderService()->delete_by_id($order_id);
         Flight::json(["message" => "Order deleted"]);
     });
 
+    Flight::route('GET /@id', function ($order_id) {
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $order = Flight::get('order_service')->get_order_by_id($order_id);
+        Flight::json($order);
+    });
+
+    Flight::route('GET /status/count', function () {
+        Flight::auth_middleware()->authorizeRoles([Roles::USER, Roles::ADMIN]);
+        $user_id = Flight::get('user')->id;
+        $status_id = Flight::request()->query['status_id'];
+        $count = Flight::get('order_service')->count_orders_by_status($user_id, $status_id);
+        Flight::json($count);
+    });
 });
